@@ -91,7 +91,8 @@ sudo chown http:http -R /usr/share/webapps/wordpress
 sudo groupadd wp
 sudo usermod -a -G wp http
 sudo usermod -a -G wp "$USER"
-sudo chown :wp -R /usr/share/webapps/wordpress 
+sudo chown :wp -R /usr/share/webapps/wordpress
+sudo chmod -R 774 /usr/share/webapps/wordpress 
 
 # Fixes 'Cannot save plugins to localhost'
 file='/usr/share/webapps/wordpress/wp-config.php'
