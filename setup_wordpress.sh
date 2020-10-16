@@ -27,8 +27,6 @@ sudo pacman -S --noconfirm --needed mysql
 sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 sudo systemctl enable --now mysql
 sudo mysql -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY 'password';"
-sudo mysql -e "GRANT ALL PRIVILEGES ON mydb.* TO 'admin'@'localhost';"
-sudo mysql -e "FLUSH PRIVILEGES;"
 sudo mysql -e "CREATE DATABASE wordpress;"
 sudo mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'admin'@'localhost' IDENTIFIED BY 'password';"
 sudo mysql -e "FLUSH PRIVILEGES;"
