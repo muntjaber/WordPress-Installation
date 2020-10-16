@@ -34,8 +34,6 @@ If you wish to use a different database name, username and password, you can cha
 
 ```bash
 sudo mysql -e "CREATE USER 'your-username'@'localhost' IDENTIFIED BY 'your-password';"
-sudo mysql -e "GRANT ALL PRIVILEGES ON mydb.* TO 'your-username'@'localhost';"
-sudo mysql -e "FLUSH PRIVILEGES;"
 sudo mysql -e "CREATE DATABASE your-database-name;"
 sudo mysql -e "GRANT ALL PRIVILEGES ON your-database-name.* TO 'your-username'@'localhost' IDENTIFIED BY 'your-password';"
 sudo mysql -e "FLUSH PRIVILEGES;"
