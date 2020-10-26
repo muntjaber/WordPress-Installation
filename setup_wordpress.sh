@@ -54,6 +54,7 @@ file='/etc/httpd/conf/httpd.conf'
 sym='#'
 comment 'LoadModule mpm_event_module modules\/mod_mpm_event.so'
 uncomment 'LoadModule mpm_prefork_module modules\/mod_mpm_prefork.so'
+uncomment 'LoadModule rewrite_module modules\/mod_rewrite.so'
 
 sudo tee -a /etc/httpd/conf/httpd.conf << EOF
 LoadModule php7_module modules/libphp7.so
@@ -69,12 +70,16 @@ sudo pacman -S --noconfirm --needed wordpress phpmyadmin
 yay -S --noconfirm --needed wp-cli
 
 sudo tee /etc/httpd/conf/extra/httpd-wordpress.conf << EOF
-Alias /wp "/usr/share/webapps/wordpress"
-<Directory "/usr/share/webapps/wordpress">
-	AllowOverride All
-	Options FollowSymlinks
-	Require all granted
-</Directory>
+<VirtualHost *:80>
+	DocumentRoot /usr/share/webapps/wordpress
+	<Directory /usr/share/webapps/wordpress>
+		Options +Indexes +FollowSymLinks +ExecCGI
+          	AllowOverride All
+          	Order deny,allow
+          	Allow from all
+          	Require all granted
+	</Directory>
+</VirtualHost>
 EOF
 
 sudo tee -a /etc/httpd/conf/httpd.conf << EOF
@@ -84,7 +89,7 @@ EOF
 sudo systemctl restart httpd
 sudo systemctl enable --now mysqld
 
-# Fixes 'Plugins are unable to install: Could not reate directory'
+# Fixes 'Plugins are unable to install: Could not create directory'
 sudo chown http:http -R /usr/share/webapps/wordpress
 sudo groupadd wp
 sudo usermod -a -G wp http
@@ -100,4 +105,5 @@ define('FS_METHOD', 'direct');
 EOF
 fi
 
-xdg-open 'http://localhost/wp'
+xdg-open 'http://localhost' >/dev/null 2>&1 &
+disown

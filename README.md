@@ -2,7 +2,22 @@
 
 This guide shows you how to install and setup WordPress on any *Ubuntu*-derivative (you’ll be redirected to the appropriate guide) and *Arch*-derivatives.
 
-Run the installation script. If everything is successful, the following page should open in your default browser:
+Run `setup_wordpress.sh` to begin installation.
+
+### Customization
+
+If you wish to use a different database name, username and password, you can change the `mysql` queries accordingly:
+
+```bash
+sudo mysql -e "CREATE USER 'your-username'@'localhost' IDENTIFIED BY 'your-password';"
+sudo mysql -e "CREATE DATABASE your-database-name;"
+sudo mysql -e "GRANT ALL PRIVILEGES ON your-database-name.* TO 'your-username'@'localhost' IDENTIFIED BY 'your-password';"
+sudo mysql -e "FLUSH PRIVILEGES;"
+```
+
+### Finalizing installation
+
+If everything is successful, the following page should open in your default browser:
 
 ![start-page](images/1.png)
 
@@ -28,18 +43,7 @@ Click on `Run the installation`. All of the following details are up to you to p
 
 Click on `Installat WordPress`, and you’ll be ready to go!
 
-## Customizing the script
-
-If you wish to use a different database name, username and password, you can change the `mysql` queries accordingly:
-
-```bash
-sudo mysql -e "CREATE USER 'your-username'@'localhost' IDENTIFIED BY 'your-password';"
-sudo mysql -e "CREATE DATABASE your-database-name;"
-sudo mysql -e "GRANT ALL PRIVILEGES ON your-database-name.* TO 'your-username'@'localhost' IDENTIFIED BY 'your-password';"
-sudo mysql -e "FLUSH PRIVILEGES;"
-```
-
 ## Reference
 
-This guide is based on [ArchWiki WordPress](https://wiki.archlinux.org/index.php/Wordpress) and automates the process described there.
+This guide is based on [ArchWiki WordPress](https://wiki.archlinux.org/index.php/Wordpress), and automates the process described therein with the additional instructions for adding permalinks support (as can be found in [article](https://www.howtoforge.com/tutorial/arch-linux-wordpress-install/)).
 
