@@ -90,20 +90,27 @@ sudo systemctl restart httpd
 sudo systemctl enable --now mysqld
 
 # Fixes 'Plugins are unable to install: Could not create directory'
-sudo chown http:http -R /usr/share/webapps/wordpress
 sudo groupadd wp
 sudo usermod -a -G wp http
 sudo usermod -a -G wp "$USER"
-sudo chown :wp -R /usr/share/webapps/wordpress
+sudo chown http:wp -R /usr/share/webapps/wordpress
 sudo chmod -R 774 /usr/share/webapps/wordpress 
+
+pushd /usr/share/webapps/wordpress
 
 # Fixes 'Cannot save plugins to localhost'
 file='/usr/share/webapps/wordpress/wp-config.php'
 if [ -f $file ]; then
-    sudo tee -a $file  << EOF
+    sudo sed -ri "/^(\s*|#*\s*|/{2,}\s*)?define\('FS_METHOD'.*/s/.*/define('FS_METHOD', 'direct');/" $file
+else
+    wp config create --dbname='wordpress' --dbuser='admin' --dbpass='password' --skip-check
+    sudo tee -a $file << EOF
 define('FS_METHOD', 'direct');
 EOF
 fi
+
+wp core install --url=localhost --title='WordPress' --admin_user='admin' --admin_password='password' --admin_email='youremail@example.com' --skip-email
+popd
 
 xdg-open 'http://localhost' >/dev/null 2>&1 &
 disown
